@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1676004058 source:c:\users\acer\documents\tailieu\testsdl\main.cpp
+	<iostream>
+	<SDL.h>
+
