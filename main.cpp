@@ -1,101 +1,40 @@
 #include <iostream>
 #include <SDL.h>
 
+
+#include<string.h>
+#include<SDL_image.h>
+
 using namespace std;
-
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
-const string WINDOW_TITLE = "An Implementation of Code.org Painter";
-void logSDLError(std::ostream& os,
-                 const std::string &msg, bool fatal = false);
-
-void logSDLError(std::ostream& os,
-                 const std::string &msg, bool fatal)
+SDL_Surface* Loadimage(string file_path)
 {
-    os << msg << " Error: " << SDL_GetError() << std::endl;
-    if (fatal) {
-        SDL_Quit();
-        exit(1);
+
+    SDL_Surface* Loadimage = NULL;
+    SDL_Surface*optimize_image = NULL;
+    Loadimage = IMG_Load(file_path.c_str());
+    if(Loadimage!=NULL){
+        optimize_image = SDL_Displayformat(Loadimage);
+        SDL_FreeSureface(Loadimage);
     }
+    return optimize_image;
 }
-
-void initSDL(SDL_Window* &window, SDL_Renderer* &renderer);
-
-void initSDL(SDL_Window* &window, SDL_Renderer* &renderer)
+int main(int arc , char*argv[])
 {
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-        logSDLError(std::cout, "SDL_Init", true);
-
-    window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED,
-       SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-    window = SDL_CreateWindow(WINDOW_TITLE.c_str(), SDL_WINDOWPOS_CENTERED,
-       SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_FULLSCREEN_DESKTOP);
-    if (window == nullptr) logSDLError(std::cout, "CreateWindow", true);
-
-
-    //Khi chạy trong môi trường bình thường (không chạy trong máy ảo)
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED |
-                                              SDL_RENDERER_PRESENTVSYNC);
-    //Khi chạy ở máy ảo (ví dụ tại máy tính trong phòng thực hành ở trường)
-    //renderer = SDL_CreateSoftwareRenderer(SDL_GetWindowSurface(window));
-
-    if (renderer == nullptr) logSDLError(std::cout, "CreateRenderer", true);
-
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-    SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-}
-
-void quitSDL(SDL_Window* window, SDL_Renderer* renderer);
-
-void quitSDL(SDL_Window* window, SDL_Renderer* renderer)
-{
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-}
-void waitUntilKeyPressed();
-
-void waitUntilKeyPressed()
-{
-    SDL_Event e;
-    while (true) {
-        if ( SDL_WaitEvent(&e) != 0 &&
-             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
-            return;
-        SDL_Delay(100);
+    SDL_Surface* screen = NULL;
+    SDL_Surface* image = NULL;
+    if(SDL_Init(SDL_INIT_EVERYTHING)==-1){
+        return 1;
     }
-}
-int main(int argc, char* argv[])
-{
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    initSDL(window, renderer);
-    SDL_RenderClear(renderer);
-
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);   // white
-    SDL_RenderDrawPoint(renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);   // red
-    SDL_RenderDrawLine(renderer, 100, 100, 200, 200);
-    SDL_Rect filled_rect;
-    filled_rect.x = SCREEN_WIDTH - 400;
-    filled_rect.y = SCREEN_HEIGHT - 150;
-    filled_rect.w = 320;
-    filled_rect.h = 100;
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // green
-    SDL_RenderFillRect(renderer, &filled_rect);
+    screen = SDL_SetVideoMode(1200 , 600 , 32 , SDL_SWSURFACE);
+    image = Loadimage("bkground.png");
+    SDL_SlitSurface(image,NULL,screen,NULL);
+    SDL_Flip(screen);
+    SDL_Delay(5000);
+    SDL_FreeSurface(image);
+    SDL_Quit();
 
 
-   //Khi thông thường chạy với môi trường bình thường ở nhà
-    SDL_RenderPresent(renderer);
-   //Khi chạy ở máy thực hành WinXP ở trường (máy ảo)
-   //SDL_UpdateWindowSurface(window);
 
-
-    // Your drawing code here
-    // use SDL_RenderPresent(renderer) to show it
-
-    waitUntilKeyPressed();
-    quitSDL(window, renderer);
     return 0;
-}
 
+}
