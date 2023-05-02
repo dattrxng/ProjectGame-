@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="pong" />
+		<Option title="snakegame" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -31,7 +31,15 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Utils.h" />
+		<Unit filename="exception.cpp" />
+		<Unit filename="exception.h" />
+		<Unit filename="font.cpp" />
+		<Unit filename="font.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="mainwindow.cpp" />
+		<Unit filename="mainwindow.h" />
+		<Unit filename="texture.cpp" />
+		<Unit filename="texture.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
