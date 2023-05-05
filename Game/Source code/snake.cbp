@@ -33,6 +33,8 @@
 		</Compiler>
 		<Unit filename="exception.cpp" />
 		<Unit filename="exception.h" />
+		<Unit filename="field.cpp" />
+		<Unit filename="field.h" />
 		<Unit filename="font.cpp" />
 		<Unit filename="font.h" />
 		<Unit filename="main.cpp" />
