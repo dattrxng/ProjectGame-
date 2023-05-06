@@ -1,121 +1,101 @@
-/*This source code copyrighted by Lazy Foo' Productions (2004-2022)
-and may not be redistributed without written permission.*/
+#include "mainwindow.h"
+#include "font.h"
+#include "texture.h"
+#include "field.h"
+#include "snake.h"
+#include "music.h"
 
-//Using SDL and standard IO
 #include <SDL.h>
-#include <stdio.h>
 
-//Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+#include <iostream>
+#include <chrono>
+#include <string>
 
-//Starts up SDL and creates window
-bool init();
+constexpr static int WIDTH  = 640;
+constexpr static int HEIGHT = 480;
 
-//Loads media
-bool loadMedia();
-
-//Frees media and shuts down SDL
-void close();
-
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
-
-//The image we will load and show on the screen
-SDL_Surface* gHelloWorld = NULL;
-
-bool init()
+int main(int argc, char* args[])
 {
-	//Initialization flag
-	bool success = true;
+    using namespace std::chrono;
 
-	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-		success = false;
-	}
-	else
-	{
-		//Create window
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-		if( gWindow == NULL )
-		{
-			printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-			success = false;
-		}
-		else
-		{
-			//Get window surface
-			gScreenSurface = SDL_GetWindowSurface( gWindow );
-		}
-	}
 
-	return success;
-}
+    MainWindow win(WIDTH, HEIGHT, "Snaky");
+    win.set_icon("apple.png");
 
-bool loadMedia()
-{
-	//Loading success flag
-	bool success = true;
 
-	//Load splash image
-	gHelloWorld = SDL_LoadBMP( "hello_world.bmp" );
-	if( gHelloWorld == NULL )
-	{
-		printf( "Unable to load image %s! SDL Error: %s\n", "hello_world.bmp", SDL_GetError() );
-		success = false;
-	}
+    Font font ("lazy.ttf", 18);
+    Texture title (win);
+    title.loadFromRenderedText("An nhieu nhat co the.", font, SDL_Color{0xFF,0,0,0xFF});
 
-	return success;
-}
 
-void close()
-{
-	//Deallocate surface
-	SDL_FreeSurface( gHelloWorld );
-	gHelloWorld = NULL;
+    auto avail_height = win.get_height() - (title.get_height()*2);
+    Field field(WIDTH, avail_height, win);
 
-	//Destroy window
-	SDL_DestroyWindow( gWindow );
-	gWindow = NULL;
+    Snake snake(&field, 0);
 
-	//Quit SDL subsystems
-	SDL_Quit();
-}
 
-int main( int argc, char* args[] )
-{
-	//Start up SDL and create window
-	if( !init() )
-	{
-		printf( "Failed to initialize!\n" );
-	}
-	else
-	{
-		//Load media
-		if( !loadMedia() )
-		{
-			printf( "Failed to load media!\n" );
-		}
-		else
-		{
-			//Apply the image
-			SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );
+    field.add_random_fruit();
+    field.add_random_fruit();
 
-			//Update the surface
-			SDL_UpdateWindowSurface( gWindow );
 
-            //Hack to get window to stay up
-            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
-		}
-	}
+    Music music ("1.mp3");
+    music.play();
 
-	//Free resources and close SDL
-	close();
+    auto t1 = steady_clock::now();
+    SDL_Event e;
+    auto score1 = 0;
+    bool quit = false;
+    while (!quit) {
 
-	return 0;
+        while( SDL_PollEvent( &e ) != 0 ) {
+
+            if( e.type == SDL_QUIT ) {
+                quit = true;
+            }
+
+            snake.handle_event(e);
+        }
+
+
+        auto s2 = steady_clock::now();
+        auto duration2 = duration_cast<seconds>( s2 - t1 ).count();
+        if (duration2 > 10) {
+            field.add_random_obstacle(snake.get_coordinate());
+            t1 = s2;
+        }
+
+
+        auto score2 = snake.score();
+        if (score2 > score1) {
+            title.loadFromRenderedText("An nhieu nhat co the. Score: " + std::to_string(snake.score()), font, SDL_Color{0xFF,0,0,0xFF});
+            score1 = score2;
+        }
+
+
+
+        if(!snake.make_move()) {
+            Texture t (win);
+            t.loadFromRenderedText("BAN DA THUA!!! Score: " + std::to_string(snake.score()), font, SDL_Color{0xFF,0,0,0xFF});
+            win.clear();
+            t.render(( win.get_width() - t.get_width() ) / 2, ( win.get_height() - t.get_height() ) / 2 );
+            win.update();
+
+            SDL_Delay(5000);
+            break;
+        }
+
+
+
+        win.clear();
+
+        title.render( ( win.get_width() - title.get_width() ) / 2, ( title.get_height() ) / 2 );
+        field.render(0, title.get_height()*2, &snake);
+
+        win.update();
+
+
+        SDL_Delay(100);
+    }
+
+    return 0;
 }
