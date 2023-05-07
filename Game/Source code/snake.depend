@@ -1,0 +1,88 @@
+# depslib dependency file v1.0
+1680967490 source:c:\users\acer\desktop\projectgame-\game\source code\exception.cpp
+	"exception.h"
+
+1680967490 c:\users\acer\desktop\projectgame-\game\source code\exception.h
+	<stdexcept>
+	<string>
+
+1680967490 source:c:\users\acer\desktop\projectgame-\game\source code\font.cpp
+	"font.h"
+	"exception.h"
+	<algorithm>
+
+1680967490 c:\users\acer\desktop\projectgame-\game\source code\font.h
+	<SDL_ttf.h>
+	<string>
+
+1683471342 source:c:\users\acer\desktop\projectgame-\game\source code\mainwindow.cpp
+	"mainwindow.h"
+	"exception.h"
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+	<iostream>
+	<algorithm>
+
+1680967490 c:\users\acer\desktop\projectgame-\game\source code\mainwindow.h
+	"font.h"
+	<string>
+	<SDL.h>
+
+1683043542 source:c:\users\acer\desktop\projectgame-\game\source code\texture.cpp
+	"texture.h"
+	"exception.h"
+	<SDL_image.h>
+	<SDL_ttf.h>
+
+1683043587 c:\users\acer\desktop\projectgame-\game\source code\texture.h
+	"mainwindow.h"
+	"font.h"
+	<SDL.h>
+	<string>
+
+1680968270 source:c:\users\acer\desktop\projectgame-\game\source code\field.cpp
+	"field.h"
+	<algorithm>
+	<cassert>
+	<cmath>
+
+1680967490 c:\users\acer\desktop\projectgame-\game\source code\field.h
+	"texture.h"
+	"mainwindow.h"
+	"snake.h"
+	"music.h"
+	<vector>
+	<random>
+	<memory>
+
+1683353447 c:\users\acer\desktop\projectgame-\game\source code\snake.h
+	<SDL.h>
+	<deque>
+	<utility>
+
+1680967490 c:\users\acer\desktop\projectgame-\game\source code\music.h
+	<SDL_mixer.h>
+	<string>
+
+1683471342 source:c:\users\acer\desktop\projectgame-\game\source code\main.cpp
+	"mainwindow.h"
+	"font.h"
+	"texture.h"
+	"field.h"
+	"snake.h"
+	"music.h"
+	<SDL.h>
+	<iostream>
+	<chrono>
+	<string>
+
+1680967490 source:c:\users\acer\desktop\projectgame-\game\source code\music.cpp
+	"music.h"
+	"exception.h"
+
+1683353447 source:c:\users\acer\desktop\projectgame-\game\source code\snake.cpp
+	"snake.h"
+	"field.h"
+	<cmath>
+

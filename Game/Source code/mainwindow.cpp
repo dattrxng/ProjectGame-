@@ -68,7 +68,7 @@ void MainWindow::set_icon(const std::string& path)
         throw SnakeException(std::string("Could not load Icon! SDL_image Error: ") + IMG_GetError());
     }
     SDL_SetWindowIcon(gWindow, icon);
-    SDL_FreeSurface(icon); // icon is no longer required
+    SDL_FreeSurface(icon);
 }
 
 void MainWindow::clear()

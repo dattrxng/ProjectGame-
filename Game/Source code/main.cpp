@@ -38,7 +38,7 @@ int main(int argc, char* args[])
     field.add_random_fruit();
 
 
-    Music music ("1.mp3");
+    Music music ("chpn_op66.mp3");
     music.play();
 
     auto t1 = steady_clock::now();

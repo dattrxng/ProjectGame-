@@ -40,6 +40,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="mainwindow.cpp" />
 		<Unit filename="mainwindow.h" />
+		<Unit filename="music.cpp" />
+		<Unit filename="music.h" />
 		<Unit filename="snake.cpp" />
 		<Unit filename="snake.h" />
 		<Unit filename="texture.cpp" />
