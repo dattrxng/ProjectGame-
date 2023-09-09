@@ -6,7 +6,7 @@
 Snake::Snake(Field* f, std::size_t init_size)
     : field{f}, size{init_size}, coordinates{}, next_dir{Directions::Right}
 {
-
+nmmmm
     std::size_t y = field->get_height() / 2;
     std::size_t x = field->get_width() / 2;
     coordinates.emplace_back(y, x);
